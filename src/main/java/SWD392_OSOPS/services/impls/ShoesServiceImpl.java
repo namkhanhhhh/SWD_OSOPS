@@ -1,11 +1,5 @@
 package SWD392_OSOPS.services.impls;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 import SWD392_OSOPS.dtos.ShoesRevenueDTO;
 import SWD392_OSOPS.entities.Brand;
 import SWD392_OSOPS.entities.Shoes;
@@ -14,12 +8,19 @@ import SWD392_OSOPS.repositories.BrandRepository;
 import SWD392_OSOPS.repositories.ShoesRepository;
 import SWD392_OSOPS.services.BrandService;
 import SWD392_OSOPS.services.ShoesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ShoesServiceImpl implements ShoesService {
@@ -45,15 +46,15 @@ public class ShoesServiceImpl implements ShoesService {
 
     @Override
     public Shoes getShoesByID(int id) throws FileNotFoundException {
-      if(ShoesRepository.findById(id).isEmpty()){
-          throw new FileNotFoundException("Not found!");
-      }
-       return ShoesRepository.findById(id).get();
+        if (ShoesRepository.findById(id).isEmpty()) {
+            throw new FileNotFoundException("Not found!");
+        }
+        return ShoesRepository.findById(id).get();
     }
 
     @Override
     public Shoes getShoesByIdForManager(int id) {
-        if(ShoesRepository.findById(id).isEmpty()){
+        if (ShoesRepository.findById(id).isEmpty()) {
             return null;
         }
         return ShoesRepository.findById(id).get();
@@ -63,17 +64,29 @@ public class ShoesServiceImpl implements ShoesService {
     public List<Shoes> getShoesByBrand(int id) throws FileNotFoundException {
         List<Shoes> listShoes = findAllShoes();
         Brand brand = brandService.getBrand(id);
-        if(brand ==null) return null;
+        if (brand == null) return null;
         List<Shoes> l = new ArrayList<>();
         for (int i = 0; i < listShoes.size(); i++) {
-            if(listShoes.get(i).getBrand().equals(brand) && listShoes.get(i).getStatus()) l.add(listShoes.get(i));
+            if (listShoes.get(i).getBrand().equals(brand) && listShoes.get(i).getStatus()) l.add(listShoes.get(i));
         }
         return l;
     }
 
     @Override
     public void editShoes(Shoes p) {
+        Shoes s = ShoesRepository.findById(p.getShoesId())
+                .orElseThrow(() -> new NoSuchElementException("Shoes not found with ID: " + p.getShoesId()));
 
+        s.setProductName(p.getProductName());
+        s.setPrice(p.getPrice());
+        s.setStatus(p.getStatus());
+        s.setReleaseDate(p.getReleaseDate());
+        s.setModifiedOn(LocalDate.now());
+        s.setBrand(p.getBrand());
+        s.setDiscount(p.getDiscount());
+        s.setSizes(p.getSizes());
+
+        ShoesRepository.save(s);
     }
 
     @Override
@@ -90,9 +103,8 @@ public class ShoesServiceImpl implements ShoesService {
 
     @Override
     public Page<Shoes> findShoesPage(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1,5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         return this.ShoesRepository.findAll(pageable);
-
     }
 
 
@@ -110,7 +122,7 @@ public class ShoesServiceImpl implements ShoesService {
     public List<Shoes> getbestsale() throws FileNotFoundException {
         List<Integer> li = ShoesRepository.getBestSale();
         List<Shoes> lp = new ArrayList<>();
-        for(Integer i : li){
+        for (Integer i : li) {
             lp.add(getShoesByID(i));
         }
         return lp;
@@ -136,40 +148,40 @@ public class ShoesServiceImpl implements ShoesService {
     @Override
     public Page<Shoes> getShoesBrandByPahination(int id, int pageNo) throws FileNotFoundException {
         List<Shoes> list = getShoesByBrand(id);
-        if(list == null) return null;
-        Pageable pageable = PageRequest.of(pageNo -1,6);
+        if (list == null) return null;
+        Pageable pageable = PageRequest.of(pageNo - 1, 6);
         int start = (int) pageable.getOffset();
         int end = pageable.getOffset() + pageable.getPageSize() > list.size() ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
         list = list.subList(start, end);
-        return new PageImpl<>(list,pageable,getShoesByBrand(id).size());
+        return new PageImpl<>(list, pageable, getShoesByBrand(id).size());
     }
 
     @Override
     public Page<Shoes> searchShoesByStatus(boolean status, int pageNo) {
         List<Shoes> list = ShoesRepository.searchShoesByStatus(status);
-        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         int start = (int) pageable.getOffset();
         int end = pageable.getOffset() + pageable.getPageSize() > list.size() ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
         list = list.subList(start, end);
-        return new PageImpl<>(list,pageable, ShoesRepository.searchShoesByStatus(status).size());
+        return new PageImpl<>(list, pageable, ShoesRepository.searchShoesByStatus(status).size());
     }
 
     @Override
     public Page<Shoes> searchByPrice(double min, double max, int PageNo) {
-        Pageable pageable = PageRequest.of(PageNo-1,6);
-        return ShoesRepository.findByPriceRangeAndStatus(min,max,pageable);
+        Pageable pageable = PageRequest.of(PageNo - 1, 6);
+        return ShoesRepository.findByPriceRangeAndStatus(min, max, pageable);
     }
 
     @Override
     public String GetTotalRevenue() {
-        if(ShoesRepository.TotalRevenue()!= null) return ShoesRepository.TotalRevenue();
+        if (ShoesRepository.TotalRevenue() != null) return ShoesRepository.TotalRevenue();
         return null;
     }
 
     @Override
     public List<ShoesRevenueDTO> BestSaleShoes() {
         List<ShoesRevenueDTO> list = ShoesRepository.TotalRevenueOfShoes();
-        return list!=null? list : null;
+        return list != null ? list : null;
     }
 
     @Override
@@ -179,7 +191,7 @@ public class ShoesServiceImpl implements ShoesService {
 
         List<ShoesRevenueDTO> results = ShoesRepository.TotalRevenueOfShoesByList(startDate, endDate);
         int size = Math.min(5, results.size());
-        return results != null ? results.subList(0,size) : null;
+        return results != null ? results.subList(0, size) : null;
     }
 
     private LocalDate convertToLocalDate(Date date) {
@@ -188,14 +200,9 @@ public class ShoesServiceImpl implements ShoesService {
 
     @Override
     public String GetRevenueByDate(Date start, Date end) {
-        if(ShoesRepository.TotalRevenueByDate(start,end)!= null) return ShoesRepository.TotalRevenueByDate(start,end);
+        if (ShoesRepository.TotalRevenueByDate(start, end) != null)
+            return ShoesRepository.TotalRevenueByDate(start, end);
         return null;
     }
-
-
-
-
-
-
 
 }

@@ -27,11 +27,8 @@ public interface ShoesRepository extends JpaRepository<Shoes, Integer> {
     @Query(value = "SELECT * FROM Shoes WHERE product_name LIKE %:name% AND Shoes.status = true", nativeQuery = true)
     List<Shoes> SearchProductforShop(@Param("name") String name);
 
-
-
     @Query(value = "select * from Shoes where Shoes.status = true", nativeQuery = true)
     Page<Shoes> ViewProductforShop(Pageable pageable);
-
 
     @Query(value = "SELECT * FROM Shoes WHERE price >= :minPrice AND price <= :maxPrice AND status = true", nativeQuery = true)
     Page<Shoes> findByPriceRangeAndStatus(@Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice, Pageable pageable);
