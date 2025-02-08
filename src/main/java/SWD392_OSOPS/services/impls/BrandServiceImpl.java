@@ -46,7 +46,7 @@ public class BrandServiceImpl implements BrandService {
         LocalDate startDate = convertToLocalDate(start);
         LocalDate endDate = convertToLocalDate(end);
 
-        List<BrandRevenueDTO> results = brandRepository.ListRevenueOfBrandBuDate(startDate, endDate);
+        List<BrandRevenueDTO> results = brandRepository.ListRevenueOfBrandByDate(startDate, endDate);
         return results != null ? results : null;
     }
 

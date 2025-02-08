@@ -1,5 +1,6 @@
 package SWD392_OSOPS.controllers;
 
+import SWD392_OSOPS.services.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import SWD392_OSOPS.dtos.UserDto;
 import SWD392_OSOPS.entities.User;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
-import SWD392_OSOPS.services.PhoneService;
+import SWD392_OSOPS.services.ShoesService;
 import SWD392_OSOPS.services.RoleService;
 import SWD392_OSOPS.services.UserService;
 
@@ -33,7 +34,7 @@ public class MainController {
     private RoleService roleService;
 
     @Autowired
-    PhoneService phoneService;
+    ShoesService shoesService;
 
     @GetMapping("/page/login")
     @CrossOrigin
@@ -46,9 +47,9 @@ public class MainController {
     public String index(Model model) throws FileNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("listPhone", phoneService.getbestsale());
+            model.addAttribute("listPhone", shoesService.getbestsale());
             model.addAttribute("isLogin", false);
-            model.addAttribute("listPhone", phoneService.getbestsale());
+            model.addAttribute("listPhone", shoesService.getbestsale());
             return "index";
         }
         String role = userService.findByUsername(authentication.getName()).getRoles().get(0).getRoleName();
@@ -61,7 +62,7 @@ public class MainController {
             model.addAttribute("username", authentication.getName());
             return "redirect:/manager";
         } else {
-            model.addAttribute("listPhone", phoneService.getbestsale());
+            model.addAttribute("listPhone", shoesService.getbestsale());
             model.addAttribute("isLogin", true);
             model.addAttribute("username", authentication.getName());
             model.addAttribute("userRole", role);

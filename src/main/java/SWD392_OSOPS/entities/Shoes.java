@@ -19,7 +19,7 @@ public class Shoes {
   @Id
   @Column(name = "shoes_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int phoneId;
+  private int shoesId;
 
   @Column(name = "shoes_name")
   private String productName;
