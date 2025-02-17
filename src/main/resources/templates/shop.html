@@ -25,9 +25,14 @@
     .product-filters ul li {
         border: 3px solid #051922;
     }
-    .single-product-item{
+    .single-product-item {
         height: 525px;
-
+        width: 525px;
+    }
+    .owl-carousel .owl-item img {
+        height: 200px;
+        width: 200px;
+        -webkit-transform-style: preserve-3d;
     }
 </style>
 <!-- breadcrumb-section -->
@@ -99,15 +104,14 @@
             </div>
         </div>
         <div class="row product-lists">
-            <div th:each="phone: ${listPhone}" class="col-lg-4 col-md-6 text-center "  style="padding: 43px;">
+            <div th:each="shoes: ${listShoes}" class="col-lg-4 col-md-6 text-center "  style="padding: 43px;">
                 <div class="single-product-item">
                     <div class="product-image">
-                        <a th:href="@{/single-product(id=${phone.phoneId})}"><img th:src="@{${phone.picture.main}}"
-                                                                                       alt=""></a>
+                        <a th:href="@{/single-product(id=${shoes.shoesId})}"><img th:src="${shoes?.picture?.main}" alt="Shoe Image" /></a>
                     </div>
-                    <h3 th:text="${phone.productName + ' - ' + phone.ram + 'GB/' + #numbers.formatDecimal(phone.memory, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ phone.origin}"></h3>
-                    <p class="product-price" th:text="${#numbers.formatDecimal(phone.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></p>
-                    <a th:href="@{/cart/phone/{id}(id=${phone.phoneId})}" onclick="showAlert()" class="cart-btn"><i
+                    <h3 th:text="${shoes.productName + ' - ' + shoes.sizes + 'GB/' + #numbers.formatDecimal(shoes.discount, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ shoes.releaseDate}"></h3>
+                    <p class="product-price" th:text="${#numbers.formatDecimal(shoes.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></p>
+                    <a th:href="@{/cart/shoes/{id}(id=${shoes.shoesId})}" onclick="showAlert()" class="cart-btn"><i
                             class="fas fa-shopping-cart" ></i> Add to Cart</a>
                 </div>
             </div>
@@ -161,19 +165,19 @@
             <div class="col-lg-12">
                 <div class="logo-carousel-inner">
                     <div class="single-logo-item">
-                        <img th:src="@{images/company-logos/1.png}" alt="">
+                        <img th:src="@{images/company-logos/nike.png}" alt="">
                     </div>
                     <div class="single-logo-item">
-                        <img th:src="@{images/company-logos/2.png}" alt="">
+                        <img th:src="@{images/company-logos/adidas.png}" alt="" >
                     </div>
                     <div class="single-logo-item">
-                        <img th:src="@{images/company-logos/3.png}" alt="">
+                        <img th:src="@{images/company-logos/fila.png}" alt="">
                     </div>
                     <div class="single-logo-item">
-                        <img th:src="@{images/company-logos/4.png}" alt="">
+                        <img th:src="@{images/company-logos/converse.png}" alt="">
                     </div>
                     <div class="single-logo-item">
-                        <img th:src="@{images/company-logos/5.png}" alt="">
+                        <img th:src="@{images/company-logos/mlb.png}" alt="">
                     </div>
                 </div>
             </div>

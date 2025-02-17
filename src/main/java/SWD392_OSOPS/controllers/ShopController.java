@@ -91,7 +91,7 @@ public class ShopController {
                 }else{
                     model.addAttribute("check", false);
                 }
-                model.addAttribute("listPhone", list);
+                model.addAttribute("listShoes", list);
                 model.addAttribute("totalPage", TotalPage);
                 model.addAttribute("currentPage", page);
                 model.addAttribute("username", authentication.getName());
@@ -106,7 +106,7 @@ public class ShopController {
             }else{
                 model.addAttribute("check", false);
             }
-            model.addAttribute("listPhone", list);
+            model.addAttribute("listShoes", list);
             model.addAttribute("totalPage", list.getTotalPages());
             model.addAttribute("currentPage", page);
             return "shop";
@@ -137,7 +137,7 @@ public class ShopController {
         }else{
             model.addAttribute("check", false);
         }
-        model.addAttribute("listPhone", list);
+        model.addAttribute("listShoes", list);
 
         model.addAttribute("totalPage", TotalPage);
         model.addAttribute("currentPage", page);
