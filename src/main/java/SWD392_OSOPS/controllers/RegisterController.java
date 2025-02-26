@@ -66,6 +66,7 @@ public class RegisterController {
                 return "register";
             }
             if (userDto.getPassword().equals(userDto.getRepeatPassword())) {
+
                 userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
                 userService.save(userDto);
                 System.out.println("success");

@@ -3,9 +3,11 @@ package SWD392_OSOPS.services.impls;
 import SWD392_OSOPS.dtos.ShoesRevenueDTO;
 import SWD392_OSOPS.entities.Brand;
 import SWD392_OSOPS.entities.Shoes;
+import SWD392_OSOPS.entities.Size;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
 import SWD392_OSOPS.repositories.BrandRepository;
 import SWD392_OSOPS.repositories.ShoesRepository;
+import SWD392_OSOPS.repositories.SizeRepository;
 import SWD392_OSOPS.services.BrandService;
 import SWD392_OSOPS.services.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,10 @@ public class ShoesServiceImpl implements ShoesService {
     private BrandRepository brandRepository;
     @Autowired
     private BrandService brandService;
-
+    @Autowired
+    private SizeRepository sizeRepository;
+    @Autowired
+    private ShoesRepository shoesRepository;
 
     @Override
     public List<Shoes> findAllShoes() {
@@ -73,7 +78,7 @@ public class ShoesServiceImpl implements ShoesService {
     }
 
     @Override
-    public void editShoes(Shoes p) {
+    public void editShoes(Shoes p,List<Integer> listSizeId) {
         Shoes s = ShoesRepository.findById(p.getShoesId())
                 .orElseThrow(() -> new NoSuchElementException("Shoes not found with ID: " + p.getShoesId()));
 
@@ -84,9 +89,22 @@ public class ShoesServiceImpl implements ShoesService {
         s.setModifiedOn(LocalDate.now());
         s.setBrand(p.getBrand());
         s.setDiscount(p.getDiscount());
-        s.setSizes(p.getSizes());
+        updateShoeSizes(p.getShoesId(), listSizeId);
 
         ShoesRepository.save(s);
+    }
+
+    public void updateShoeSizes(int shoesId, List<Integer> sizeIds) {
+        // Tìm sản phẩm
+        Shoes shoes = shoesRepository.findById(shoesId)
+                .orElseThrow(() -> new RuntimeException("Shoe not found"));
+
+        // Tìm danh sách Size dựa vào sizeIds
+        List<Size> selectedSizes = sizeRepository.findAllById(sizeIds);
+
+        // Gán danh sách Size vào Shoes
+        shoes.setSizes(selectedSizes);
+
     }
 
     @Override
@@ -203,6 +221,11 @@ public class ShoesServiceImpl implements ShoesService {
         if (ShoesRepository.TotalRevenueByDate(start, end) != null)
             return ShoesRepository.TotalRevenueByDate(start, end);
         return null;
+    }
+
+    @Override
+    public List<Size> getAllSizes() {
+        return sizeRepository.findAll();
     }
 
 }

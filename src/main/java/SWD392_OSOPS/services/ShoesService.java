@@ -1,6 +1,7 @@
 package SWD392_OSOPS.services;
 
 
+import SWD392_OSOPS.entities.Size;
 import org.springframework.data.domain.Page;
 import SWD392_OSOPS.dtos.ShoesRevenueDTO;
 import SWD392_OSOPS.entities.Shoes;
@@ -12,12 +13,13 @@ import java.util.List;
 
 @Service
 public interface ShoesService {
+
     List<Shoes> findAllShoes();
     void addShoes(Shoes Shoes);
     Shoes getShoesByID(int id) throws FileNotFoundException;
     Shoes getShoesByIdForManager(int id);
     List<Shoes> getShoesByBrand(int id) throws FileNotFoundException;
-    void editShoes(Shoes p);
+    void editShoes(Shoes p,List<Integer> listSizeId);
     void changeStatus(Shoes p);
     List<Shoes> searchShoes(String name);
     Page<Shoes> findShoesPage(int pageNo);
@@ -32,5 +34,6 @@ public interface ShoesService {
     List<ShoesRevenueDTO> BestSaleShoes();
     List<ShoesRevenueDTO> BestSaleShoesByDate(Date start, Date end);
     String GetRevenueByDate(Date start, Date end);
+    List<Size> getAllSizes() ;
 
 }

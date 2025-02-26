@@ -44,7 +44,7 @@
     <p style="text-align: center;
     font-size: larger;" th:text="${message}"></p>
 </div>
-<div class="container mt-5">
+<div class="containerrr mt-5">
     <div class="row tm-content-row">
         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
 
@@ -57,33 +57,28 @@
 
 
                             <th scope="col">PRODUCT NAME</th>
-                            <th scope="col">Ram</th>
-                            <th scope="col">Memory</th>
-                            <th scope="col">Origin</th>
+
                             <th scope="col">Price</th>
                             <th scope="col">Action</th>
                             <th scope="col">Status</th>
                         </tr>
                         </thead>
                         <tbody id="tableee">
-                        <tr th:each="phone: ${listPhone}">
+                        <tr th:each="shoes: ${listShoes}">
 <!--                            <td class="tm-product-name" th:text="${item.index + 1}"></td>-->
-                            <td th:text="${phone.productName}"></td>
-                            <td th:text="${phone.ram} + 'GB'"></td>
-                            <td th:text="${#numbers.formatDecimal(phone.memory, 0, 'COMMA', 0,'POINT')} + 'GB'"></td>
-                            <td th:text="${phone.origin}"></td>
-                            <td th:text="${#numbers.formatDecimal(phone.price, 1, 'COMMA', 2, 'POINT')} + ' $'"></td>
+                            <td th:text="${shoes.productName}"></td>
+                            <td th:text="${#numbers.formatDecimal(shoes.price, 1, 'COMMA', 2, 'POINT')} + ' $'"></td>
 
                             <td>
-                                <a th:href="@{/edit-product(id=${phone.phoneId})}" class="btn btn-link" style="color: white;">Edit</a>
+                                <a th:href="@{/edit-product(id=${shoes.shoesId})}" class="btn btn-link" style="color: white;">Edit</a>
 
                             </td>
 
                             <td class="action-links">
-                                <a  th:if="${phone.status}" href="#" onclick="changeStatus(this); return false;" class="stock active" style="color: green;" th:data-id="${phone.phoneId}" >
+                                <a  th:if="${shoes.status}" href="#" onclick="changeStatus(this); return false;" class="stock active" style="color: green;" th:data-id="${shoes.shoesId}" >
                                     <i class="fas fa-check-circle" data-toggle="tooltip" title="In Stock"></i>
                                 </a>
-                                <a th:if="!${phone.status}" href="#" onclick="changeStatus(this); return false;" class="stock inactive" style="color: gray;" th:data-id="${phone.phoneId}" >
+                                <a th:if="!${shoes.status}" href="#" onclick="changeStatus(this); return false;" class="stock inactive" style="color: gray;" th:data-id="${shoes.shoesId}" >
                                     <i class="fas fa-times-circle" data-toggle="tooltip" title="Out of Stock"></i>
                                 </a>
                             </td>

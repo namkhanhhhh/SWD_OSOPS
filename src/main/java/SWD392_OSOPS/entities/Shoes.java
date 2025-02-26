@@ -42,9 +42,11 @@ public class Shoes {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
   @JsonIgnore
+  @ToString.Exclude
   private Brand brand;
 
   @OneToOne(mappedBy = "shoes", cascade = CascadeType.ALL)
+  @ToString.Exclude
   private Picture picture;
 
   @OneToMany(mappedBy = "shoes", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -59,6 +61,7 @@ public class Shoes {
   private Discount discount;
 
   @ManyToMany
+  @ToString.Exclude
   @JoinTable(
           name = "shoes_size",
           joinColumns = @JoinColumn(name = "shoes_id"),
