@@ -59,21 +59,62 @@
         </div>
 
         <div class="row">
-            <div th:each="phone: ${listPhone}" class="col-lg-4 col-md-6 text-center" >
+<!--            <div th:each="phone: ${listPhone}" class="col-lg-4 col-md-6 text-center" >-->
+<!--                <div class="single-product-item">-->
+<!--                    <div class="product-image">-->
+<!--                        <a th:href="@{/single-product(id=${phone.phoneId})}"><img-->
+<!--                                th:src="@{${phone.picture.main}}"-->
+<!--                                alt=""></a>-->
+<!--                    </div>-->
+<!--                    <h3 th:text="${phone.productName + ' - ' + phone.ram + 'GB/' + #numbers.formatDecimal(phone.memory, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ phone.origin}"></h3>-->
+<!--                    <p class="product-price" th:text="${#numbers.formatDecimal(phone.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></p>-->
+
+
+<!--                    <a th:href="@{/cart/phone/{id}(id=${phone.phoneId})}" class="cart-btn" onclick="showAlert()"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="col-lg-4 col-md-6 text-center" >
                 <div class="single-product-item">
                     <div class="product-image">
-                        <a th:href="@{/single-product(id=${phone.phoneId})}"><img
-                                th:src="@{${phone.picture.main}}"
+                        <a ><img
+                                src="https://giayxshop.vn/wp-content/uploads/2025/01/z6216915064841_04a72ba45e1a5306ae710cf691916e7c-600x600.jpg"
                                 alt=""></a>
                     </div>
-                    <h3 th:text="${phone.productName + ' - ' + phone.ram + 'GB/' + #numbers.formatDecimal(phone.memory, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ phone.origin}"></h3>
-                    <p class="product-price" th:text="${#numbers.formatDecimal(phone.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></p>
+                    <h3 >Nike Air Max</h3>
+                    <p class="product-price">1000$</p>
 
 
-                    <a th:href="@{/cart/phone/{id}(id=${phone.phoneId})}" class="cart-btn" onclick="showAlert()"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    <a  class="cart-btn" onclick="showAlert()"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                 </div>
             </div>
+            <div class="col-lg-4 col-md-6 text-center" >
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a ><img
+                                src="https://giayxshop.vn/wp-content/uploads/2025/01/z6216915064841_04a72ba45e1a5306ae710cf691916e7c-600x600.jpg"
+                                alt=""></a>
+                    </div>
+                    <h3 >Nike Air Max</h3>
+                    <p class="product-price">1000$</p>
 
+
+                    <a  class="cart-btn" onclick="showAlert()"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center" >
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a ><img
+                                src="https://giayxshop.vn/wp-content/uploads/2025/01/z6216915064841_04a72ba45e1a5306ae710cf691916e7c-600x600.jpg"
+                                alt=""></a>
+                    </div>
+                    <h3 >Nike Air Max</h3>
+                    <p class="product-price">1000$</p>
+
+
+                    <a  class="cart-btn" onclick="showAlert()"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
 
         </div>
     </div>

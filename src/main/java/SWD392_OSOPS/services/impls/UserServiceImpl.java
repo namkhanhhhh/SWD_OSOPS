@@ -21,10 +21,7 @@ import SWD392_OSOPS.services.UserService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -148,7 +145,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-        Role role = roleRepository.findByRoleName("USER");
+       Role role = roleRepository.findByRoleName("USER");
+       // Optional<Role> roleOpt = roleRepository.findById(2);
+      //  Role role = roleOpt.get();
         role.setUsers(List.of(user));
         user.setRoles(List.of(role));
         Cart cart = new Cart();

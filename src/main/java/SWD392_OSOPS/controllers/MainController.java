@@ -47,9 +47,9 @@ public class MainController {
     public String index(Model model) throws FileNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("listPhone", shoesService.getbestsale());
+           // model.addAttribute("listPhone", shoesService.getbestsale());
             model.addAttribute("isLogin", false);
-            model.addAttribute("listPhone", shoesService.getbestsale());
+
             return "index";
         }
         String role = userService.findByUsername(authentication.getName()).getRoles().get(0).getRoleName();

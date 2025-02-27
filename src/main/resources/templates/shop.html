@@ -105,11 +105,11 @@
         </div>
         <div class="row product-lists">
             <div th:each="shoes: ${listShoes}" class="col-lg-4 col-md-6 text-center "  style="padding: 43px;">
-                <div class="single-product-item">
+                <div class="single-product-item" style="width:110%">
                     <div class="product-image">
                         <a th:href="@{/single-product(id=${shoes.shoesId})}"><img th:src="${shoes?.picture?.main}" alt="Shoe Image" /></a>
                     </div>
-                    <h3 th:text="${shoes.productName + ' - ' + shoes.sizes + 'GB/' + #numbers.formatDecimal(shoes.discount, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ shoes.releaseDate}"></h3>
+                    <h3 th:text="${shoes.productName}"></h3>
                     <p class="product-price" th:text="${#numbers.formatDecimal(shoes.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></p>
                     <a th:href="@{/cart/shoes/{id}(id=${shoes.shoesId})}" onclick="showAlert()" class="cart-btn"><i
                             class="fas fa-shopping-cart" ></i> Add to Cart</a>
