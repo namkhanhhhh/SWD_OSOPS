@@ -43,8 +43,8 @@
 								<th>Total Price</th>
 								<th>View detail</th>
 								<th>Status</th>
-								<th>Action</th>
-								<th>Feedback</th>
+<!--								<th>Action</th>-->
+<!--								<th>Feedback</th>-->
 							</tr>
 						</thead>
 						<tbody>
@@ -53,23 +53,23 @@
 								<td style="padding-left: 25px;" th:text="${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 2, 'POINT') + ' $'}"></td>
 								<td><a class="btn btn-info" th:href="@{/orderDetail/{id}(id=${order.orderId})}">Details</a></td>
 								<td th:text="${order.status}"></td>
-								<td>
-									<a th:if="${order.status == 'Pending'}"
-									   class="btn btn-danger cancel-order"
-									   th:href="@{cancel-order/{id}(id=${order.orderId})}"
-									   onclick="return confirmCancel()">Cancel</a>
-									<button th:unless="${order.status == 'Pending'}"
-											class="btn btn-danger"
-											disabled>Cancel</button>
-								</td>
-								<td>
-									<a th:if="${order.status == 'Completed'}"
-									   class="btn btn-info"
-									   th:href="@{report/{id}(id=${order.orderId})}">Report</a>
-									<button th:unless="${order.status == 'Completed'}"
-											class="btn btn-info"
-											disabled>Report</button>
-								</td>
+<!--								<td>-->
+<!--									<a th:if="${order.status == 'Pending'}"-->
+<!--									   class="btn btn-danger cancel-order"-->
+<!--									   th:href="@{cancel-order/{id}(id=${order.orderId})}"-->
+<!--									   onclick="return confirmCancel()">Cancel</a>-->
+<!--									<button th:unless="${order.status == 'Pending'}"-->
+<!--											class="btn btn-danger"-->
+<!--											disabled>Cancel</button>-->
+<!--								</td>-->
+<!--								<td>-->
+<!--									<a th:if="${order.status == 'Completed'}"-->
+<!--									   class="btn btn-info"-->
+<!--									   th:href="@{report/{id}(id=${order.orderId})}">Report</a>-->
+<!--									<button th:unless="${order.status == 'Completed'}"-->
+<!--											class="btn btn-info"-->
+<!--											disabled>Report</button>-->
+<!--								</td>-->
 							</tr>
 						</tbody>
 					</table>					
