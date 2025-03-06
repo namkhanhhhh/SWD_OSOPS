@@ -81,7 +81,7 @@ public class ManagerController {
         return "order-detail";
     }
     @GetMapping("/approve/{id}")
-    public String approveOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
+    public String approveOrder(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         try {
             orderService.updateOrderStatus(id, "Approved");
             redirectAttributes.addFlashAttribute("message", "Order approved successfully");
@@ -92,7 +92,7 @@ public class ManagerController {
     }
 
     @GetMapping("/reject/{id}")
-    public String rejectOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
+    public String rejectOrder(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         try {
             orderService.updateOrderStatus(id, "Rejected");
             redirectAttributes.addFlashAttribute("message", "Order rejected successfully");
@@ -103,14 +103,14 @@ public class ManagerController {
     }
 
     @GetMapping("/complete/{id}")
-    public String completeOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
+    public String completeOrder(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         orderService.updateOrderStatus(id, "Completed");
         redirectAttributes.addFlashAttribute("message", "Order completed successfully");
         return "redirect:/manager";
     }
 
     @GetMapping("/inCompleted/{id}")
-    public String inCompletedOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
+    public String inCompletedOrder(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         orderService.updateOrderStatus(id, "InCompleted");
         redirectAttributes.addFlashAttribute("message", "Order Incomplete successfully");
         return "redirect:/manager";

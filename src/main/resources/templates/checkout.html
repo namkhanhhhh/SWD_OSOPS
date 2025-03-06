@@ -96,8 +96,8 @@
 									<td>Product</td>
 									<td>Total</td>
 								</tr>
-								<tr th:each="items : ${listPByC}" th:if="${items.phone.status}">
-									<td th:text="${items.phone.productName + ' - ' + items.phone.ram + 'GB/' + #numbers.formatDecimal(items.phone.memory, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ items.phone.origin}"></td>
+								<tr th:each="items : ${listPByC}" th:if="${items.shoes.status}">
+									<td th:text="${items.shoes.productName}"></td>
 									<td th:text="${#numbers.formatDecimal(items.total, 1, 'COMMA', 2, 'POINT') + ' $'}" ></td>
 								</tr>
 							</tbody>

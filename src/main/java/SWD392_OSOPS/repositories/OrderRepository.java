@@ -32,8 +32,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
             "where ordertb.status = 'Completed'", nativeQuery = true)
     String TotalOrder();
 
-    @Query(value = "select count(ordertb.order_id) as totalOrder from ordertb\n" +
-            "where ordertb.status = 'Completed' and ordertb.order_date >= :start and ordertb.order_date <= :end ", nativeQuery = true)
-    String TotalOrderByDate(Date start, Date end);
+    @Query(value = "select count(ordertb.order_id) as totalOrder from ordertb " +
+            "where ordertb.status = 'Completed' and ordertb.order_date >= :start and ordertb.order_date <= :end",
+            nativeQuery = true)
+    String TotalOrderByDate(@Param("start") Date start, @Param("end") Date end);
 
 }

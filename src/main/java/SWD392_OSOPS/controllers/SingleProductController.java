@@ -1,7 +1,10 @@
 package SWD392_OSOPS.controllers;
 
+import SWD392_OSOPS.entities.Cart;
 import SWD392_OSOPS.entities.Shoes;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
+import SWD392_OSOPS.services.CartItemService;
+import SWD392_OSOPS.services.CartService;
 import SWD392_OSOPS.services.ShoesService;
 import SWD392_OSOPS.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SingleProductController {
     @Autowired
     ShoesService shoesService;
-//    @Autowired
-//    CartItemService cartItemService;
-//    @Autowired
-//    CartService cartService;
+    @Autowired
+    CartItemService cartItemService;
+    @Autowired
+    CartService cartService;
     @Autowired
 UserService userService;
 
@@ -62,21 +65,21 @@ UserService userService;
     }
 
 
-//    @PostMapping("/cart-single/phone/{id}")
-//    public String addPhoneQuantityToCart(@PathVariable("id") String id, Model model, @RequestParam("quantity") int quantity) throws FileNotFoundException {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if(id.isEmpty() || id==null)   throw new FileNotFoundException("Not Found");
-//
-//        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-//            model.addAttribute("isLogin", false);
-//            return "cart";
-//        }
-//        model.addAttribute("isLogin", true);
-//        model.addAttribute("username", authentication.getName());
-//        cartItemService.addPhoneSingleToCart(authentication.getName(),Integer.parseInt(id), quantity);
-//        Cart cart= cartService.getCart(authentication.getName());
-//        model.addAttribute("listPByC", cart.getItems());
-//        model.addAttribute("cartTotal", cart.getTotal());
-//        return "redirect:/shop";
-//    }
+    @PostMapping("/cart-single/shoes/{id}")
+    public String addPhoneQuantityToCart(@PathVariable("id") String id, Model model, @RequestParam("quantity") int quantity) throws FileNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(id.isEmpty() || id==null)   throw new FileNotFoundException("Not Found");
+
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            model.addAttribute("isLogin", false);
+            return "cart";
+        }
+        model.addAttribute("isLogin", true);
+        model.addAttribute("username", authentication.getName());
+        cartItemService.addPhoneSingleToCart(authentication.getName(),Integer.parseInt(id), quantity);
+        Cart cart= cartService.getCart(authentication.getName());
+        model.addAttribute("listPByC", cart.getItems());
+        model.addAttribute("cartTotal", cart.getTotal());
+        return "redirect:/shop";
+    }
 }

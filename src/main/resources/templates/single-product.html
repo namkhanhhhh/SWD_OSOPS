@@ -327,7 +327,7 @@ td{
                     </div>
 
                     <div class="single-product-form">
-                        <form th:action="@{/cart-single/phone/{id}(id=${product.shoesId})}" method="post" class="add-to-cart-form">
+                        <form th:action="@{/cart-single/shoes/{id}(id=${product.shoesId})}" method="post" class="add-to-cart-form">
                             <input style="border: solid 1px;" type="number" id="quantityInput" name="quantity" min="1" placeholder="0">
                             <button type="submit" class="cart-btn" onclick="showAlert()" id="bt" style="margin-left: 7%;"><i class="fas fa-shopping-cart" ></i> Add to Cart</button>
                         </form>

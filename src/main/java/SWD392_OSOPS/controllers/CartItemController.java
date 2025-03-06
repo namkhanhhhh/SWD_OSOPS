@@ -28,7 +28,7 @@ import SWD392_OSOPS.services.UserService;
         @Autowired
         UserService userService;
 
-            @GetMapping("/cart/delete-phone/{id}")
+            @GetMapping("/cart/delete-shoes/{id}")
         public String deletePhone(@PathVariable("id") int id, Model model, RedirectAttributes redirectAttributes){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
@@ -44,7 +44,7 @@ import SWD392_OSOPS.services.UserService;
             return "redirect:/cart";
         }
 
-            @GetMapping("/cart/phone/{id}")
+            @GetMapping("/cart/shoes/{id}")
         public String addPhoneToCart(@PathVariable("id") int id, Model model){
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
