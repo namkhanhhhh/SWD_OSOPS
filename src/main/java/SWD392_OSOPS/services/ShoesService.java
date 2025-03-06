@@ -6,12 +6,10 @@ import org.springframework.data.domain.Page;
 import SWD392_OSOPS.dtos.ShoesRevenueDTO;
 import SWD392_OSOPS.entities.Shoes;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@Service
 public interface ShoesService {
 
     List<Shoes> findAllShoes();

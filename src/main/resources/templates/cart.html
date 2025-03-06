@@ -52,19 +52,19 @@
 
 						<tbody>
 						<tr class="table-body-row" th:each="items : ${listPByC}">
-							<td class="product-remove"><a th:href="@{/cart/delete-phone/{id}(id=${items.phone.phoneId})}" onclick="return confirmDeleteP()"><i class="far fa-window-close"></i></a></td>
+							<td class="product-remove"><a th:href="@{/cart/delete-shoes/{id}(id=${items.shoes.shoesId})}" onclick="return confirmDeleteP()"><i class="far fa-window-close"></i></a></td>
 							<td class="product-image">
-								<img th:src="@{${items.phone.picture.main}}" alt="">
+								<img th:src="@{${items.shoes.picture.main}}" alt="">
 							</td>
-							<td class="product-name" th:text="${items.phone.productName + ' - ' + items.phone.ram + 'GB/' + #numbers.formatDecimal(items.phone.memory, 0, 'COMMA', 0,'POINT') + 'GB' +' - '+ items.phone.origin}"></td>
-							<td class="product-price" th:text="${#numbers.formatDecimal(items.phone.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></td>
+							<td class="product-name" th:text="${items.shoes.productName + ' - ' }"></td>
+							<td class="product-price" th:text="${#numbers.formatDecimal(items.shoes.price, 1, 'COMMA', 2, 'POINT') + ' $'}"></td>
 							<td class="product-quantity">
-								<form th:action="@{/cart/update-quantity/{id}(id=${items.phone.phoneId})}" method="post">
+								<form th:action="@{/cart/update-quantity/{id}(id=${items.shoes.shoesId})}" method="post">
 									<input type="number" name="quantity" placeholder="0" th:value="${items.quantity}" min="1"
-										   th:disabled="${!items.phone.status}" onchange="validateQuantity(this)">
+										   th:disabled="${!items.shoes.status}" onchange="validateQuantity(this)">
 								</form>
 							</td>
-							<td class="product-total" th:text="${items.phone.status == true} ? ${#numbers.formatDecimal(items.total, 1, 'COMMA', 2, 'POINT') + ' $'} : 'InActive'"></td>
+							<td class="product-total" th:text="${items.shoes.status == true} ? ${#numbers.formatDecimal(items.total, 1, 'COMMA', 2, 'POINT') + ' $'} : 'InActive'"></td>
 						</tr>
 						</tbody>
 					</table>
