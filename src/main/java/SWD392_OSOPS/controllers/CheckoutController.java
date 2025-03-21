@@ -1,12 +1,5 @@
 package SWD392_OSOPS.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import SWD392_OSOPS.dtos.ProfileDto;
 import SWD392_OSOPS.entities.Cart;
 import SWD392_OSOPS.entities.User;
@@ -14,6 +7,12 @@ import SWD392_OSOPS.entities.UserDetail;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
 import SWD392_OSOPS.services.CartService;
 import SWD392_OSOPS.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
@@ -26,11 +25,8 @@ public class CheckoutController {
 
     @GetMapping("/checkout")
     public String checkout(Model model) throws FileNotFoundException {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-                model.addAttribute("isLogin", false);
-                return "checkout";
-            }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         User user = userService.findByUsername(authentication.getName());
         model.addAttribute("isLogin", true);
         model.addAttribute("username", authentication.getName());

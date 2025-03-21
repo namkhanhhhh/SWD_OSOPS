@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDetailImpl implements UserDetails {
+public class UserDetailConfig implements UserDetails {
 
     private User user;
 

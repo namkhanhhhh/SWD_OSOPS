@@ -1,25 +1,18 @@
 package SWD392_OSOPS.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import SWD392_OSOPS.entities.Order;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
 import SWD392_OSOPS.services.OrderItemService;
 import SWD392_OSOPS.services.OrderService;
 import SWD392_OSOPS.services.ShoesService;
 import SWD392_OSOPS.services.UserService;
-
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ManagerController {
@@ -37,34 +30,18 @@ public class ManagerController {
     @GetMapping("/manager")
     public String viewOrderList(Model model) throws FileNotFoundException {
         model.addAttribute("orderList", orderService.getAllOrder());
-//        model.addAttribute("listBestSalePhone",phoneService.getbestsale());
-//        model.addAttribute("BrandRevenue",phoneService.GetBrandRevenue());
         if(phoneService.GetTotalRevenue() == null)  model.addAttribute("revenue","Unknow");
         else model.addAttribute("revenue", phoneService.GetTotalRevenue() );
         return "manager";
     }
 
-    @PostMapping("/searchorder")
-    public String searchOrderById(@RequestParam("name") String name, Model model, RedirectAttributes redirectAttributes){
-        List<Order> orders = orderService.searchOrderByUserName(name);
-        if (orders.isEmpty()) {
-            model.addAttribute("error", "No orders found for user: " + name);
-        } else {
-            model.addAttribute("listOrderByUser", orders);
-        }
-        return "manager";
-    }
     @GetMapping("/order-detail-manager/{id}")
     public String detailOrderManager(@PathVariable("id") int id, Model model) throws FileNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("isLogin", false);
-            return "order-detail";
-        }
+
         model.addAttribute("isLogin", true);
         model.addAttribute("username", authentication.getName());
         model.addAttribute("listItemByO", orderItemService.listOrderItemByOrderId(id));
-        model.addAttribute("orderByOrderId",orderService.getOrder(id));
         model.addAttribute("userByOrderId", userService.findUserByOrderId(id));
             return "order-detail";
     }
@@ -72,10 +49,7 @@ public class ManagerController {
     @GetMapping("/order-detail")
     public String orderDetail(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("isLogin", false);
-            return "order-detail";
-        }
+
         model.addAttribute("isLogin", true);
         model.addAttribute("username", authentication.getName());
         return "order-detail";
@@ -116,14 +90,4 @@ public class ManagerController {
         return "redirect:/manager";
     }
 
-    @PostMapping("/filterOrdersByDate")
-    public String filterOrdersByDate(@RequestParam("startDate") String startDate,
-                                     @RequestParam("endDate") String endDate,
-                                     Model model) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        List<Order> orders = orderService.findOrdersBetweenDates(start, end);
-        model.addAttribute("orderList", orders);
-        return "manager";
-    }
 }

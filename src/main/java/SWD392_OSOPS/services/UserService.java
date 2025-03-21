@@ -27,12 +27,6 @@ public interface UserService {
 
     int getUserId(String userName);
 
-    void updateResetPasswordToken(String token, String email) throws UserNotFoundException;
-
-    public User getByResetPasswordToken(String token);
-
-    public void updatePassword(User user, String newPassword);
-
     User findByEmail(String email);
 
     User findUserByOrderId(int orderId);
@@ -42,10 +36,4 @@ public interface UserService {
     User saveUserRole(int userId, String roleName) throws UserNotFoundException;
 
     void saveUserActive(int userId, String status) throws UserNotFoundException;
-
-    List<StatisticsUserOrder> TotalOderOfUser();
-
-    List<StatisticsUserOrder> TotalOrderOfUserByDate(Date start,Date end);
-
-    User findUserById(int userId);
 }

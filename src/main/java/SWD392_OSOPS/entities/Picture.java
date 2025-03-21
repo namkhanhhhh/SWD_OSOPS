@@ -34,7 +34,8 @@ public class Picture {
     private String site;
 
     @OneToOne
-    @JoinColumn(name = "shoes_id", unique = true) // Unique đảm bảo 1-1
+    @JoinColumn(name = "shoes_id", unique = true)
+    @ToString.Exclude// Unique đảm bảo 1-1
     private Shoes shoes;
 
 }

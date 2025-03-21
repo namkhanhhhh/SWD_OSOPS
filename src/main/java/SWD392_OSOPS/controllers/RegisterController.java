@@ -1,5 +1,10 @@
 package SWD392_OSOPS.controllers;
 
+import SWD392_OSOPS.dtos.UserDto;
+import SWD392_OSOPS.entities.EmailDetails;
+import SWD392_OSOPS.entities.User;
+import SWD392_OSOPS.services.EmailService;
+import SWD392_OSOPS.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,11 +15,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import SWD392_OSOPS.dtos.UserDto;
-import SWD392_OSOPS.entities.EmailDetails;
-import SWD392_OSOPS.entities.User;
-import SWD392_OSOPS.services.EmailService;
-import SWD392_OSOPS.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

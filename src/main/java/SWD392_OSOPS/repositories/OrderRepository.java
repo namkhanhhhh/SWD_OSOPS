@@ -20,21 +20,4 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
     @Transactional
     @Query(value = "SELECT * FROM ordertb WHERE ordertb.user_id = :userId" , nativeQuery = true)
     List<Order> getOrderByUserId(@Param("userId") int userId);
-
-    @Modifying
-    @Transactional
-    @Query(value = "select o.order_id, o.order_date, o.user_id, o.total_price, o.status from ordertb o join user u using (user_id) where u.user_name like %:name%", nativeQuery = true)
-    List<Order> searchOrderByUserName(@Param("name") String name);
-
-    @Query("SELECT o FROM Order o WHERE o.orderDate BETWEEN :startDate AND :endDate")
-    List<Order> findOrdersBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-    @Query(value = "select count(ordertb.order_id) as totalOrder from ordertb\n" +
-            "where ordertb.status = 'Completed'", nativeQuery = true)
-    String TotalOrder();
-
-    @Query(value = "select count(ordertb.order_id) as totalOrder from ordertb " +
-            "where ordertb.status = 'Completed' and ordertb.order_date >= :start and ordertb.order_date <= :end",
-            nativeQuery = true)
-    String TotalOrderByDate(@Param("start") Date start, @Param("end") Date end);
-
 }

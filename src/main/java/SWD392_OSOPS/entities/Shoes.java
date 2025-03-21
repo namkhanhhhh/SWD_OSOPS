@@ -41,7 +41,7 @@ public class Shoes {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "brand_id", referencedColumnName = "brand_id")
-  @JsonIgnore
+
   @ToString.Exclude
   private Brand brand;
 
@@ -68,6 +68,16 @@ public class Shoes {
           inverseJoinColumns = @JoinColumn(name = "size_id")
   )
   private List<Size> sizes;
+  @Override
+  public String toString() {
+    return "Shoe{" +
+            "id=" + shoesId +
+            ", name='" + productName + '\'' +
+            ", category=" + (brand != null ? brand.getBrandId() : "null") + // Chỉ in ID
+            '}';
+  }
+
+
 
 //  public Shoes createShoes(String productName, double price, LocalDate releaseDate, Brand brand, Picture picture, List<Size> sizes) {
 //    return Shoes.builder()

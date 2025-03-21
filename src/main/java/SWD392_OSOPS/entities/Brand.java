@@ -20,7 +20,7 @@ public class Brand {
 
     @Column(name = "brand_name")
     private String brandName;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Shoes> shoes;
 

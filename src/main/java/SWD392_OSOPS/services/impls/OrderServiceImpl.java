@@ -1,19 +1,16 @@
 package SWD392_OSOPS.services.impls;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import SWD392_OSOPS.entities.*;
-import SWD392_OSOPS.exceptions.FileNotFoundException;
 import SWD392_OSOPS.repositories.OrderItemRepository;
 import SWD392_OSOPS.repositories.OrderRepository;
 import SWD392_OSOPS.repositories.UserRepository;
 import SWD392_OSOPS.services.CartService;
 import SWD392_OSOPS.services.OrderService;
-import SWD392_OSOPS.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,8 +23,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartService cartService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Override
@@ -38,14 +33,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> ListOrderByUserId(int id) {
         return orderRepository.getOrderByUserId(id);
-    }
-
-    @Override
-    public Order getOrder(int oId) throws FileNotFoundException {
-        if (orderRepository.findById(oId).isEmpty()){
-            throw new FileNotFoundException("Not found report");
-        }
-        return orderRepository.findById(oId).get();
     }
 
     @Transactional
@@ -85,13 +72,6 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-
-    @Override
-    public List<Order> searchOrderByUserName(String name) {
-        return orderRepository.searchOrderByUserName(name);
-    }
-
-
     @Transactional
     public void updateOrderStatus(int id, String status) {
         Order order = orderRepository.findById(id)
@@ -102,24 +82,5 @@ public class OrderServiceImpl implements OrderService {
         } else {
             order.setStatus(status);
             orderRepository.save(order);        }
-    }
-
-    @Override
-    public int totalOrder() {
-        if(orderRepository.TotalOrder()==null) return 0;
-        int total = Integer.parseInt(orderRepository.TotalOrder());
-        return total;
-    }
-
-    @Override
-    public int totalOrderByDate(Date start, Date end) {
-        if(orderRepository.TotalOrderByDate(start, end)==null) return 0;
-        int total = Integer.parseInt(orderRepository.TotalOrderByDate(start, end));
-        return total;
-    }
-
-    @Override
-    public List<Order> findOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return orderRepository.findOrdersBetweenDates(startDate, endDate);
     }
 }
