@@ -1,6 +1,5 @@
 package SWD392_OSOPS.services.impls;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import SWD392_OSOPS.entities.Cart;
 import SWD392_OSOPS.entities.CartItem;
 import SWD392_OSOPS.entities.User;
@@ -8,6 +7,8 @@ import SWD392_OSOPS.repositories.CartItemRepository;
 import SWD392_OSOPS.repositories.CartRepository;
 import SWD392_OSOPS.repositories.UserRepository;
 import SWD392_OSOPS.services.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;

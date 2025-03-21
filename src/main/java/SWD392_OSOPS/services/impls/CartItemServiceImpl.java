@@ -25,28 +25,28 @@ public class CartItemServiceImpl implements CartItemService {
     private CartRepository cartRepository;
 
     @Autowired
-    private ShoesRepository phoneRepository;
+    private ShoesRepository shoesRepository;
 
     @Autowired
     private UserRepository userRepository;
 
 
     @Override
-    public void removePhoneFromCart(String userName,int cartId, int phoneId) {
+    public void removeShoesFromCart(String userName, int cartId, int shoesId) {
         int quantity=0;
         double total=0;
         User user = userRepository.findByUsername(userName);
         Cart cart = user.getCart();
         List<CartItem> ciList = cart.getItems();
-        cartItemRepository.deletePhoneFromCart(cartId, phoneId);
+        cartItemRepository.deleteShoesFromCart(cartId, shoesId);
         cartRepository.save(cart);
     }
 
     @Override
-    public void addPhoneToCart(String userName, int phoneId) {
+    public void addShoesToCart(String userName, int shoesId) {
         int quantity=0;
         double total = 0;
-        Shoes upd = phoneRepository.findById(phoneId).orElse(null);
+        Shoes upd = shoesRepository.findById(shoesId).orElse(null);
         if (upd == null||!upd.getStatus()) {
             return;
         }
@@ -68,10 +68,10 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void updatePhoneQuantity(String userName,int cartId, int phoneId, int quantity) {
+    public void updateShoesQuantity(String userName, int cartId, int shoesId, int quantity) {
         int quantityCart=0;
         double total=0;
-        CartItem cartItem=cartItemRepository.listCartItemByPAC(cartId,phoneId);
+        CartItem cartItem=cartItemRepository.listCartItemByPAC(cartId,shoesId);
         User user = userRepository.findByUsername(userName);
         Cart cart = user.getCart();
         List<CartItem> ciList = cart.getItems();
@@ -83,25 +83,25 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void addPhoneSingleToCart(String userName, int phoneId, int quantity) {
-            Shoes shoes = phoneRepository.findById(phoneId).orElse(null);
+    public void addShoesSingleToCart(String userName, int shoesId, int quantity) {
+            Shoes shoes = shoesRepository.findById(shoesId).orElse(null);
             User user = userRepository.findByUsername(userName);
             Cart cart = user.getCart();
             List<CartItem> cartItems = cart.getItems();
 
-            // Check if the phone already exists in the cart
-            boolean phoneExistsInCart = false;
+
+            boolean shoesExistsInCart = false;
             for (CartItem item : cartItems) {
                 if (item.getShoes().getShoesId() == shoes.getShoesId()) {
                     item.setQuantity(item.getQuantity() + quantity);
                     cartItemRepository.save(item); // Update existing cart item
-                    phoneExistsInCart = true;
+                    shoesExistsInCart = true;
                     break;
                 }
             }
 
-            // If the phone is not already in the cart, add it as a new cart item
-            if (!phoneExistsInCart) {
+
+            if (!shoesExistsInCart) {
                 CartItem newItem = CartItem.builder()
                         .shoes(shoes)
                         .cart(cart)

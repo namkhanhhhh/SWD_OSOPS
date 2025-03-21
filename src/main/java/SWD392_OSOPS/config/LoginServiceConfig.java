@@ -18,6 +18,6 @@ public class LoginServiceConfig implements UserDetailsService {
             throw new UsernameNotFoundException("Could not find username");
         }
 
-        return UserDetailImpl.builder().user(user).build();
+        return UserDetailConfig.builder().user(user).build();
     }
 }

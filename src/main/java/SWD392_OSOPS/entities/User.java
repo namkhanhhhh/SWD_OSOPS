@@ -1,4 +1,5 @@
 package SWD392_OSOPS.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,8 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 @Data
-@ToString
+
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_detail_id", referencedColumnName = "user_detail_id")
+    @ToString.Exclude
     private UserDetail userDetail;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -56,5 +59,11 @@ public class User {
 
     @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<News> newsCreated;
-
+    @Override
+    public String toString() {
+        return "user{" +
+                "id=" + userId +
+                ", name='" + username +
+                '}';
+    }
 }

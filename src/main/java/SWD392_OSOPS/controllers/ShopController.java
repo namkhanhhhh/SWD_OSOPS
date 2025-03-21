@@ -1,5 +1,10 @@
 package SWD392_OSOPS.controllers;
 
+import SWD392_OSOPS.entities.Shoes;
+import SWD392_OSOPS.exceptions.FileNotFoundException;
+import SWD392_OSOPS.services.BrandService;
+import SWD392_OSOPS.services.ShoesService;
+import SWD392_OSOPS.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
@@ -9,19 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import swp391.SPS.services.AccessService;
-import SWD392_OSOPS.entities.Shoes;
-import SWD392_OSOPS.exceptions.FileNotFoundException;
-import SWD392_OSOPS.services.BrandService;
-//import swp391.SPS.services.CategoryService;
-import SWD392_OSOPS.services.ShoesService;
-import SWD392_OSOPS.services.UserService;
-
-import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class ShopController {
@@ -115,40 +108,5 @@ public class ShopController {
             throw new FileNotFoundException("Not Found");
         }
     }
-    @GetMapping("/shop?minPrice=&maxPrice=")
-    public String exceptionPrice() throws FileNotFoundException {
-        throw  new FileNotFoundException("Not Found");
-    }
 
-    @GetMapping("/shop/brand")
-    public String ProductByBrand(@RequestParam("id") String idBrand, Model model,@RequestParam(name = "pageNo", defaultValue = "1") int page) throws FileNotFoundException {
-        if(idBrand.isEmpty() || idBrand.equals("")){
-            throw new FileNotFoundException("Not Found");
-        }
-        int id = Integer.parseInt(idBrand);
-        model.addAttribute("listBrand", brandService.findAllBrand());
-        int TotalPage = 1;
-        Page<Shoes> list = shoesService.getShoesBrandByPahination(id,page);
-
-        if(list!=null) TotalPage = list.getTotalPages();
-
-        if(page > TotalPage || list == null){
-            model.addAttribute("check", true);
-        }else{
-            model.addAttribute("check", false);
-        }
-        model.addAttribute("listShoes", list);
-
-        model.addAttribute("totalPage", TotalPage);
-        model.addAttribute("currentPage", page);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("isLogin", false);
-
-        }else{
-            model.addAttribute("isLogin", true);
-            model.addAttribute("username", authentication.getName());
-        }
-        return "shop";
-    }
 }

@@ -70,7 +70,7 @@ public class CartController {
         Cart cart = cartService.getCart(authentication.getName());
 
         // Xóa sản phẩm khỏi giỏ hàng
-        cartItemService.removePhoneFromCart(authentication.getName(), cart.getCartId(), id);
+        cartItemService.removeShoesFromCart(authentication.getName(), cart.getCartId(), id);
 
         // Cập nhật lại tổng số tiền và danh sách sản phẩm trong giỏ hàng
 
@@ -106,7 +106,7 @@ public class CartController {
             Cart cart = cartService.getCart(username);
 
             // Cập nhật số lượng sản phẩm trong giỏ hàng
-            cartItemService.updatePhoneQuantity(username, cart.getCartId(), id, quantity);
+            cartItemService.updateShoesQuantity(username, cart.getCartId(), id, quantity);
 
             // Tính toán lại tổng số tiền giỏ hàng và từng sản phẩm
             double cartTotal = cartItemRepository.totalCart(cart.getCartId());

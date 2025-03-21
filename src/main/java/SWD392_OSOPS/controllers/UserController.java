@@ -1,5 +1,11 @@
 package SWD392_OSOPS.controllers;
 
+import SWD392_OSOPS.dtos.ProfileDto;
+import SWD392_OSOPS.dtos.UpdatePassDto;
+import SWD392_OSOPS.entities.Cart;
+import SWD392_OSOPS.entities.User;
+import SWD392_OSOPS.services.CartService;
+import SWD392_OSOPS.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -10,13 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
-import SWD392_OSOPS.dtos.ProfileDto;
-import SWD392_OSOPS.dtos.UpdatePassDto;
-import SWD392_OSOPS.entities.Cart;
-import SWD392_OSOPS.entities.User;
-import SWD392_OSOPS.services.CartService;
-import SWD392_OSOPS.services.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +78,7 @@ public class UserController {
         model.addAttribute("user", userService.findByUsername(authentication.getName()));
         List<String> messageList = new ArrayList<>();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("isLogin", false);
-            return "profile";
-        }
+
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : fieldErrors) {
                 messageList.add(fieldError.getDefaultMessage());
@@ -90,7 +89,6 @@ public class UserController {
             return "profile";
         }
         String oldPassEncode = userService.findByUsername(authentication.getName()).getPassword();
-        String oldPassEncodeCheck = passwordEncoder.encode(updatePassDto.getOldPass());
         if (passwordEncoder.matches(updatePassDto.getOldPass(), oldPassEncode)) {
             if (updatePassDto.getNewPass().equalsIgnoreCase(updatePassDto.getConfirmPass())) {
                 User user = userService.findByUsername(authentication.getName());

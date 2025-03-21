@@ -46,14 +46,5 @@ public class AdminRestController {
                 build());
     }
 
-    @PostMapping("/search")
-    public ResponseEntity searchUser(@RequestBody RequestSearchUserDto requestSearchUserDto) throws NoDataInListException, OutOfPageException, FileNotFoundException {
-        PageDto pageDto = userService.getListUserFirstLoad(requestSearchUserDto.getCurrentPage() - 1, 5, requestSearchUserDto.getSearch());
-        return ResponseEntity.ok(PageDto.builder().resultList(pageDto.getResultList()).
-                roles(roleService.findAll()).
-                currentPage(pageDto.getCurrentPage()).
-                totalPage(pageDto.getTotalPage()).
-                size(pageDto.getSize()).
-                build());
-    }
+
 }

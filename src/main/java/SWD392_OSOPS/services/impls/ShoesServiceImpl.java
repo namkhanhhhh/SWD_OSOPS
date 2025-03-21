@@ -1,14 +1,8 @@
 package SWD392_OSOPS.services.impls;
 
-import SWD392_OSOPS.dtos.ShoesRevenueDTO;
-import SWD392_OSOPS.entities.Brand;
 import SWD392_OSOPS.entities.Shoes;
-import SWD392_OSOPS.entities.Size;
 import SWD392_OSOPS.exceptions.FileNotFoundException;
-import SWD392_OSOPS.repositories.BrandRepository;
 import SWD392_OSOPS.repositories.ShoesRepository;
-import SWD392_OSOPS.repositories.SizeRepository;
-import SWD392_OSOPS.services.BrandService;
 import SWD392_OSOPS.services.ShoesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,37 +11,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ShoesServiceImpl implements ShoesService {
 
     @Autowired
     private ShoesRepository ShoesRepository;
-    @Autowired
-    private BrandRepository brandRepository;
-    @Autowired
-    private BrandService brandService;
-    @Autowired
-    private SizeRepository sizeRepository;
-    @Autowired
-    private ShoesRepository shoesRepository;
-
-    @Override
-    public List<Shoes> findAllShoes() {
-        return ShoesRepository.findAll();
-    }
-
-    @Override
-    public void addShoes(Shoes Shoes) {
-
-        ShoesRepository.save(Shoes);
-    }
 
     @Override
     public Shoes getShoesByID(int id) throws FileNotFoundException {
@@ -55,85 +26,6 @@ public class ShoesServiceImpl implements ShoesService {
             throw new FileNotFoundException("Not found!");
         }
         return ShoesRepository.findById(id).get();
-    }
-
-    @Override
-    public Shoes getShoesByIdForManager(int id) {
-        if (ShoesRepository.findById(id).isEmpty()) {
-            return null;
-        }
-        return ShoesRepository.findById(id).get();
-    }
-
-    @Override
-    public List<Shoes> getShoesByBrand(int id) throws FileNotFoundException {
-        List<Shoes> listShoes = findAllShoes();
-        Brand brand = brandService.getBrand(id);
-        if (brand == null) return null;
-        List<Shoes> l = new ArrayList<>();
-        for (int i = 0; i < listShoes.size(); i++) {
-            if (listShoes.get(i).getBrand().equals(brand) && listShoes.get(i).getStatus()) l.add(listShoes.get(i));
-        }
-        return l;
-    }
-
-    @Override
-    public void editShoes(Shoes p,List<Integer> listSizeId) {
-        Shoes s = ShoesRepository.findById(p.getShoesId())
-                .orElseThrow(() -> new NoSuchElementException("Shoes not found with ID: " + p.getShoesId()));
-
-        s.setProductName(p.getProductName());
-        s.setPrice(p.getPrice());
-        s.setStatus(p.getStatus());
-        s.setReleaseDate(p.getReleaseDate());
-        s.setModifiedOn(LocalDate.now());
-        s.setBrand(p.getBrand());
-        s.setDiscount(p.getDiscount());
-        updateShoeSizes(p.getShoesId(), listSizeId);
-
-        ShoesRepository.save(s);
-    }
-
-    public void updateShoeSizes(int shoesId, List<Integer> sizeIds) {
-        // Tìm sản phẩm
-        Shoes shoes = shoesRepository.findById(shoesId)
-                .orElseThrow(() -> new RuntimeException("Shoe not found"));
-
-        // Tìm danh sách Size dựa vào sizeIds
-        List<Size> selectedSizes = sizeRepository.findAllById(sizeIds);
-
-        // Gán danh sách Size vào Shoes
-        shoes.setSizes(selectedSizes);
-
-    }
-
-    @Override
-    public void changeStatus(Shoes p) {
-        p.setStatus(!p.getStatus());
-        ShoesRepository.save(p);
-    }
-
-    @Override
-    public List<Shoes> searchShoes(String name) {
-
-        return ShoesRepository.SearchProduct(name);
-    }
-
-    @Override
-    public Page<Shoes> findShoesPage(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
-        return this.ShoesRepository.findAll(pageable);
-    }
-
-
-    @Override
-    public Page<Shoes> searchShoes(String name, int pageNo) {
-        List<Shoes> list = ShoesRepository.SearchProduct(name);
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
-        int start = (int) pageable.getOffset();
-        int end = pageable.getOffset() + pageable.getPageSize() > list.size() ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
-        list = list.subList(start, end);
-        return new PageImpl<>(list, pageable, ShoesRepository.SearchProduct(name).size());
     }
 
     @Override
@@ -162,28 +54,6 @@ public class ShoesServiceImpl implements ShoesService {
         return new PageImpl<>(list, pageable, ShoesRepository.SearchProductforShop(name).size());
     }
 
-
-    @Override
-    public Page<Shoes> getShoesBrandByPahination(int id, int pageNo) throws FileNotFoundException {
-        List<Shoes> list = getShoesByBrand(id);
-        if (list == null) return null;
-        Pageable pageable = PageRequest.of(pageNo - 1, 6);
-        int start = (int) pageable.getOffset();
-        int end = pageable.getOffset() + pageable.getPageSize() > list.size() ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
-        list = list.subList(start, end);
-        return new PageImpl<>(list, pageable, getShoesByBrand(id).size());
-    }
-
-    @Override
-    public Page<Shoes> searchShoesByStatus(boolean status, int pageNo) {
-        List<Shoes> list = ShoesRepository.searchShoesByStatus(status);
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
-        int start = (int) pageable.getOffset();
-        int end = pageable.getOffset() + pageable.getPageSize() > list.size() ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
-        list = list.subList(start, end);
-        return new PageImpl<>(list, pageable, ShoesRepository.searchShoesByStatus(status).size());
-    }
-
     @Override
     public Page<Shoes> searchByPrice(double min, double max, int PageNo) {
         Pageable pageable = PageRequest.of(PageNo - 1, 6);
@@ -195,37 +65,4 @@ public class ShoesServiceImpl implements ShoesService {
         if (ShoesRepository.TotalRevenue() != null) return ShoesRepository.TotalRevenue();
         return null;
     }
-
-    @Override
-    public List<ShoesRevenueDTO> BestSaleShoes() {
-        List<ShoesRevenueDTO> list = ShoesRepository.TotalRevenueOfShoes();
-        return list != null ? list : null;
-    }
-
-    @Override
-    public List<ShoesRevenueDTO> BestSaleShoesByDate(Date start, Date end) {
-        LocalDate startDate = convertToLocalDate(start);
-        LocalDate endDate = convertToLocalDate(end);
-
-        List<ShoesRevenueDTO> results = ShoesRepository.TotalRevenueOfShoesByList(startDate, endDate);
-        int size = Math.min(5, results.size());
-        return results != null ? results.subList(0, size) : null;
-    }
-
-    private LocalDate convertToLocalDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    @Override
-    public String GetRevenueByDate(Date start, Date end) {
-        if (ShoesRepository.TotalRevenueByDate(start, end) != null)
-            return ShoesRepository.TotalRevenueByDate(start, end);
-        return null;
-    }
-
-    @Override
-    public List<Size> getAllSizes() {
-        return sizeRepository.findAll();
-    }
-
 }

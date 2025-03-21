@@ -36,31 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundException("Could not find any customer with the email " + email);
-        }
-        user.setResetPasswordToken(token);
-        userRepository.save(user);
-    }
-
-    @Override
-    public User getByResetPasswordToken(String token) {
-        return userRepository.findByResetPasswordToken(token);
-    }
-
-    @Override
-    public void updatePassword(User user, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        user.setPassword(encodedPassword);
-
-        user.setResetPasswordToken(null);
-        userRepository.save(user);
-    }
-
-    @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -109,45 +84,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(int userId) {
-        if (userRepository.existsById(userId)) {
-            return userRepository.findById(userId).get();
-        }
-        return null;
-    }
-
-    @Override
-    public List<StatisticsUserOrder> TotalOderOfUser() {
-        if (userRepository.ListTotalOrderOfUser() == null) return null;
-        List<StatisticsUserOrder> list = userRepository.ListTotalOrderOfUser();
-        int size = Math.min(10, list.size());
-
-        return list.subList(0, size);
-    }
-
-    @Override
-    public List<StatisticsUserOrder> TotalOrderOfUserByDate(Date start, Date end) {
-        LocalDate startDate = convertToLocalDate(start);
-        LocalDate endDate = convertToLocalDate(end);
-
-        List<StatisticsUserOrder> results = userRepository.ListTotalOrderOfUserByDate(startDate, endDate);
-        int size = Math.min(10, results.size());
-        return results != null ? results.subList(0, size) : null;
-    }
-
-    private LocalDate convertToLocalDate(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    }
-
-    @Override
     public User save(UserDto userDto) {
         User user = new User();
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
-       Role role = roleRepository.findByRoleName("USER");
-       // Optional<Role> roleOpt = roleRepository.findById(2);
-      //  Role role = roleOpt.get();
+        Role role = roleRepository.findByRoleName("USER");
         role.setUsers(List.of(user));
         user.setRoles(List.of(role));
         Cart cart = new Cart();
@@ -198,7 +140,6 @@ public class UserServiceImpl implements UserService {
         user.getUserDetail().setAddress(profileDto.getAddress());
         return userRepository.save(user);
     }
-
 
     @Override
     public User findByUsername(String username) {
